@@ -33,7 +33,7 @@
 
 import { NextResponse } from "next/server";
 import { parseNetscapeText, readCookies, saveCookies } from "@/lib/cookieUtils";
-// import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 
 export async function POST(req: Request) {
   const { raw, domain, label } = await req.json();
