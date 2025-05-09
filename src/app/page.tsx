@@ -12,7 +12,6 @@ export default function HomePage() {
   const [websites, setWebsites] = useState([]);
 
   const [cookieList, setCookieList] = useState([]);
-  const router = useRouter();
 
   const fetchCookies = async () => {
     const res = await fetch("/api/cookies-data");
@@ -67,8 +66,8 @@ export default function HomePage() {
             onChange={(e) => setDomain(e.target.value)}
           >
             <option value="">-- Pilih Website --</option>
-            {websites.map((site) => (
-              <option key={site.id} value={site.id}>
+            {websites.map((site: any, i: number) => (
+              <option key={i} value={site.id}>
                 {site.name} - {site.id}
               </option>
             ))}
@@ -122,7 +121,7 @@ export default function HomePage() {
           <p className="text-gray-500">Belum ada data cookie.</p>
         ) : (
           <div className="space-y-4">
-            {cookieList.map((cookie) => (
+            {cookieList.map((cookie: any) => (
               <div
                 key={cookie.id}
                 className="p-4 border rounded-md flex justify-between items-start"
