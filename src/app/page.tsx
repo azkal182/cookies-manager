@@ -20,7 +20,7 @@ export default function HomePage() {
   };
 
   const handleDelete = async (id: number) => {
-    await fetch(`/api/cookies-data/${id}`, { method: "DELETE" });
+    await fetch(`/api/cookies-data?id=${id}`, { method: "DELETE" });
     fetchCookies();
   };
 
