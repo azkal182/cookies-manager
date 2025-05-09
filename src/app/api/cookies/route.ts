@@ -97,5 +97,6 @@ export async function POST(req: Request) {
 
 export async function GET() {
   const data = await readCookies();
+  console.log(data);
   return NextResponse.json(data);
 }

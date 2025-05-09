@@ -107,6 +107,8 @@ export async function readCookies() {
       },
     });
 
+    console.log(data);
+
     const result = data?.map((item) => {
       return {
         name: item.domain,
