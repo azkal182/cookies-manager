@@ -92,24 +92,26 @@ export function parseNetscapeText(text: string) {
 // }
 // 2. Membaca cookies (format: Array<{ name, data }>)
 
+import { prisma } from "@/lib/prisma";
 export async function readCookies() {
   try {
     //   const raw = fs.readFileSync(COOKIE_PATH, "utf-8");
     //   return JSON.parse(raw);
-    const data = await prisma?.streaming.findMany({
+    const data = await prisma.streaming.findMany({
       include: {
         cookies: true,
       },
-      where: {
-        cookies: {
-          some: {},
-        },
-      },
+      // where: {
+      //   cookies: {
+      //     some: {},
+      //   },
+      // },
     });
+    const filtered = data.filter((d) => d.cookies.length > 0);
 
-    console.log(data);
+    // console.log(data);
 
-    const result = data?.map((item) => {
+    const result = filtered?.map((item) => {
       return {
         name: item.domain,
         data: item.cookies.map((cook) => {
