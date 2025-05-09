@@ -46,17 +46,51 @@
 // lib/cookieUtils.ts
 
 // 1. Parsing dari format Netscape ke format array of cookies
+// export function parseNetscapeText(text: string) {
+//   const lines = text
+//     .split("\n")
+//     .filter((line) => line && !line.startsWith("#"));
+
+//   const cookies: any[] = [];
+
+//   for (const line of lines) {
+//     const parts = line.split("\t");
+//     if (parts.length >= 7) {
+//       const [domain, flag, path, secure, expires, name, value] = parts;
+//       cookies.push({
+//         domain,
+//         path,
+//         secure: secure === "TRUE",
+//         expires: Number(expires),
+//         name,
+//         value,
+//       });
+//     }
+//   }
+
+//   return cookies;
+// }
+
 export function parseNetscapeText(text: string) {
-  const lines = text
-    .split("\n")
-    .filter((line) => line && !line.startsWith("#"));
+  const lines = text.split(/\r?\n/).filter((line) => {
+    return (
+      line.trim() && (!line.startsWith("#") || line.startsWith("#HttpOnly_"))
+    );
+  });
 
   const cookies: any[] = [];
 
   for (const line of lines) {
     const parts = line.split("\t");
     if (parts.length >= 7) {
-      const [domain, flag, path, secure, expires, name, value] = parts;
+      let [domain, flag, path, secure, expires, name, value] = parts;
+
+      let httpOnly = false;
+      if (domain.startsWith("#HttpOnly_")) {
+        domain = domain.replace("#HttpOnly_", "");
+        httpOnly = true;
+      }
+
       cookies.push({
         domain,
         path,
@@ -64,6 +98,7 @@ export function parseNetscapeText(text: string) {
         expires: Number(expires),
         name,
         value,
+        httpOnly,
       });
     }
   }
