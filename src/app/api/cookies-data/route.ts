@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
 export async function GET() {
@@ -21,4 +21,15 @@ export async function POST(req: Request) {
     },
   });
   return NextResponse.json(newCookie);
+}
+
+export async function DELETE(request: NextRequest) {
+  const paramsId = request.nextUrl.searchParams.get("id");
+  console.log(paramsId);
+  if (!paramsId) {
+    return NextResponse.json({ message: "params id required" });
+  }
+  const id = parseInt(paramsId);
+  await prisma.cookies.delete({ where: { id } });
+  return NextResponse.json({ success: true });
 }
